@@ -2,5 +2,6 @@ Hallo
 Hallo
 Ik zeg ook hallo
 
+Wat geweldig dit !
 
-IK ga een merge conflict maken. 
+
