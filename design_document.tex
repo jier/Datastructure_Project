@@ -1,0 +1,189 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Sudoku project | ontwerpdocument}
+\author{Menno van Leeuwen \& Jier Nzuanzu\\ Universiteit van Amsterdam}
+\date{February 2014}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introdutie}
+
+\section{Structuur}
+\subsection{Opbouw}
+De sudoku oplosser begint zijn start bij een algemene klasse die verschillende technieken aanroept om de sudoku te proberen op te lossen. Daarnaast zijn er een aantal hulp klassen die het makkelijer maken om bijvoorbeeld oplossingen voor een rij, kolom of een regio te vinden. \\
+Hieronder staan de verschillende klassen en methodes met een korte beschrijving over de werking ervan. 
+
+\subsection{Klassen}
+\begin{description}
+    \item[Sudoku] \hfill \\
+    De hoofd klasse. Deze klasse controleert het verloop van het programma, en reageert op de argumenten die de gebruiker meegeeft.
+    \item[Check] \hfill \\
+    De check klasse gebruikt de row klasse en column klasse om te kijken naar mogelijke opties. 
+    \item[Row] \hfill \\
+    De row klasse bekijkt de mogelijke opties voor een specifieke rij.
+    \item[Column] \hfill \\
+    De column klasse bekijkt de mogelijke opties voor een specifieke kolom.
+    \item[Region] \hfill \\
+    De region klasse bekijkt de mogelijke opties binnen een 3x3 vlak van de sudoku.
+    \item[SinglePos] \hfill \\
+    The main class. Used to run the program and make program flow decisions.
+    \item[SingelCan] \hfill \\
+    The main class. Used to run the program and make program flow decisions.
+    \item[CanLine] \hfill \\
+    The main class. Used to run the program and make program flow decisions.
+    \item[DoublePairs] \hfill \\
+    The main class. Used to run the program and make program flow decisions.
+    \item[MultiPairs] \hfill \\
+    Beschrijving later toe te voegen.
+    \item[NakedPairs] \hfill \\
+    Beschrijving later toe te voegen.
+    \item[HiddenPairs] \hfill \\
+    Beschrijving later toe te voegen.
+    \item[Xwings] \hfill \\
+    Beschrijving later toe te voegen.
+    \item[Swordfish] \hfill \\
+    Beschrijving later toe te voegen.
+    \item[ForcingChains] \hfill \\
+    Beschrijving later toe te voegen.
+    \item[Nishio] \hfill \\
+    Beschrijving later toe te voegen.
+    \item[Guesswork] \hfill \\
+  Als al het andere niet heeft gewerkt.
+\end{description}
+
+\subsection{Methoden}
+\begin{description}
+    \item[Sudoku] \hfill 
+    \begin{itemize}
+        \item  \textbf{read()} - dit is een erg lange beschrijving om te kijken wat er met de read method gebeurd
+        \item \textbf{printMatrix()} -
+        \item \textbf{printResults()} -
+        \item \textbf{solve()} - 
+        \item \textbf{solveRatio()} - 
+        \item \textbf{benchmark()} - 
+    \end{itemize}
+    \item[Check] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[Row] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[Column] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[Region] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[SinglePos] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[SingelCan] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[CanLine] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[DoublePairs] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[MultiPairs] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[NakedPairs] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[HiddenPairs] \hfill
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[Xwings] \hfill
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[Swordfish] \hfill
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[ForcingChains] \hfill
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[Nishio] \hfill
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+    \item[Guesswork] \hfill 
+    \begin{itemize}
+        \item \textbf{todoAddMethods()} - beschrijving hier
+    \end{itemize}
+\end{description}
+Sudoku:
+
+Check:
+\begin{itemize}
+    \item Punt 1
+    \item Punt 2
+    \item Punt 3
+\end{itemize}
+Row:
+\begin{itemize}
+    \item Punt 1
+    \item Punt 2
+    \item Punt 3
+\end{itemize}
+Column:
+\begin{itemize}
+    \item Punt 1
+    \item Punt 2
+    \item Punt 3
+\end{itemize}
+Region:
+\begin{itemize}
+    \item Punt 1
+    \item Punt 2
+    \item Punt 3
+\end{itemize}
+\section{Gebruikte technieken}
+\begin{itemize}
+    \item Single Position
+    \item Single Candidate
+    \item Candidate lines
+    \item Double pairs
+    \item Multiple lines
+    \item Naked pairs/ Triple
+    \item Hidden pairs/ Triple
+    \item X-wings
+    \item Swordfish
+    \item Forcing chains
+    \item Nishio
+    \item Guesswork
+\end{itemize}
+
+\section{Bronnen}
+\begin{description}
+    \item[Github repository van het project] \hfill \\
+    $https://github.com/jier/Datastructure_Project$
+    \item[Algemene uitleg sudoku's] \hfill \\
+   $http://www.sudokuoftheday.com/$
+    \item[Code voorbeelden] \hfill \\
+   $http://www.colloquial.com/games/sudoku/java_sudoku.html$ \\
+   $https://github.com/pseudonumos/SudokuSolver/blob/master/Sudoku.java$
+\end{description}
+
+
+\end{document}
