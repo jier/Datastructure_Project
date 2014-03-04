@@ -1,19 +1,26 @@
 import java.util.*;
 import java.lang.*;
+import java.io.*;
 
-public class sudoku{
-	private Cell[][] grid;
-	private Selection[][] groups;
+public class Sudoku{
+
+	long start = 0;
+	long end = 0;
+	ArrayList<Integer> list = new ArrayList<Integer>();
+
+	private String grid;
+	//private array[][] grid;
+	//private Selection[][] groups;
 	private int[][] original, generated;
-	private Set solvedCells;
+	//private Set solvedCells;
 	private int count,turns,wipes, startCount;
 	private boolean stuck;
 	
-	public sudoku{
+	public Sudoku(){
 		this(new int[9][9]);
 	}
 	
-	public sudoku(int [][] org){
+	public Sudoku(int [][] org){
 		turns =0;
 		original = new int[9][9];
 		generated = new int[9][9];
@@ -25,10 +32,31 @@ public class sudoku{
 				}
 			}
 		}
-		
 	}
 	
 	public void read(){
+		 System.out.println("ik ga inlezen");
+		 try {
+            BufferedReader file = new BufferedReader(new FileReader("single.txt"));
+            //start = System.currentTimeMillis();
+            String str, copy;
+            while ((str = file.readLine()) != null) {
+            	//int sudokuStream = Integer.parseInt(src.toString());
+  
+                for(int i = 0; i < str.length(); i++)
+					{
+					char c = str.charAt(i);
+				   int f = Character.digit(c,10); 
+				   System.out.printf("%s\n", c);
+				   list.add(f);
+				}				
+            }
+
+            ///end = System.currentTimeMillis();
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public void benchmark(){
@@ -41,6 +69,7 @@ public class sudoku{
 	}
 	
 	public boolean isSolved(){
+		return false;
 	}
 	 
 	public int getCount(){
@@ -62,17 +91,52 @@ public class sudoku{
 	public int getStartCount(){
 		return startCount;
 	}
+
+	public void printBoard() {
+	
+		    for (int k = 0; k < list.size(); k++) {
+		    	
+		        if(k%9==0 && k != 0)
+		        		System.out.println("|");
+		        	if(k%27==0)
+		                System.out.println(" -----------------------");
+		        if(k%3==0)
+		        	System.out.print("| ");
+		    	
+		    	System.out.print(list.get(k));
+		    	System.out.print(' ');
+
+		            //System.out.print("\n");
+		            
+		        
+		    }
+		    System.out.println("|");
+		    System.out.println(" -----------------------");
+
+		    System.out.print('\n');
+	}
 	
 	public int[][] printMatrix(){
 		 int[][] temp = new int[9][9];
-		 for(int i =0; i < 9; i++){
-		 	for(int j= 0; j< 9; j++){
-		 		temp[i][j]= grid[i][j];
-		 	}
-		 }
+		
 		 return temp;
 	}
-	public int [][] printResults(){
+	public int printResults(){
+
+		System.out.println("this is the end");
+		int size = list.size();
+		System.out.println(size);
+		return 6;
+	}
+
+	public static void main(String[] args) {
+		System.out.println("test");
+	    Sudoku sudoku = new Sudoku();
+	    System.out.println(sudoku.list);
+	    sudoku.read();
+	    System.out.println(sudoku.list);
+	    sudoku.printResults();
+	    sudoku.printBoard();
 	}
 	
 	
