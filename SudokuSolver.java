@@ -15,20 +15,26 @@ public class SudokuSolver{
 	//private Column column = new Column();
 	//private Region region = new Region();
 
-	
-	//private ArrayList<Integer>[] cellArray = new ArrayList[81];
-	private ArrayList<ArrayList<Integer>> cells = new ArrayList<ArrayList<Integer>>(81);
+	private ArrayList<ArrayList<Integer>> cells = new 
+ArrayList<ArrayList<Integer>>(81);
+	private ArrayList<ArrayList<Integer>> regionX = new 
+ArrayList<ArrayList<Integer>>(3);
+	private	ArrayList<ArrayList<Integer>> regionY = new 
+ArrayList<ArrayList<Integer>>(3);
+	private	ArrayList<ArrayList<ArrayList<Integer>>> region = new 
+ArrayList<ArrayList<ArrayList<Integer>>>(81);
 
 	//private int[] incomingStream = new int[81];
 
 	public SudokuSolver(int[] readSudoku){
 		//incomingStream = readSudoku;`
 		possibilities(readSudoku);
-		//generateRow();
-		//generateColumn();
-		//generateRegion();
-
-	       
+		System.out.println("These are the rows");
+		generateRow();
+		System.out.println("These are the columns");
+		generateColumn();
+		System.out.println("These are the regions");
+		generateRegion();
 	}
 
 	public void possibilities(int[] readSudoku){
@@ -36,23 +42,12 @@ public class SudokuSolver{
 		for(int i = 1; i < 10; i++){
 			zero.add(i);
 		}
-		/*zero.add(1);
-		zero.add(2);
-		zero.add(3);
-		zero.add(4);
-		zero.add(5);
-		zero.add(6);
-		zero.add(7);
-		zero.add(8);
-		zero.add(9);*/
-
+		
 		for (int i = 0; i < readSudoku.length; i++) {
 			
 			if( readSudoku[i] == 0 ){
 				cells.add(zero);
-			}
-
-			else{
+			}else{
 				ArrayList<Integer> tempArray = new ArrayList<Integer>();
 				tempArray.add(readSudoku[i]);
 				cells.add(tempArray);
@@ -106,37 +101,38 @@ public class SudokuSolver{
 				
 			}
 		}
-	
+		//System.out.println(column);
 	}
 
 
 	public void generateRegion(){
-		ArrayList<ArrayList<Integer>> regionX = new ArrayList<ArrayList<Integer>>(3);
-		ArrayList<ArrayList<Integer>> regionY = new ArrayList<ArrayList<Integer>>(3);
-		ArrayList<ArrayList<ArrayList<Integer>>> region = new ArrayList<ArrayList<ArrayList<Integer>>>(9);
 		int r = 3,c = 3;
 		for(int i =0; i< cells.size(); i+=3){
 			for(int j= 0; j<r; j++){
-				//ArrayList<Integer> tempArrayX = new ArrayList<Integer>();
 				ArrayList<Integer> tempValX =  cells.get(j+i);
-				//System.out.println(tempValX);
+				/*System.out.println(
+				"These are rows:"+tempValX);*/
 				regionX.add(tempValX);
-				region.add(regionX);
+				if(j%3 == 0){
+				region.add(regionX);}
 			}
 		}
+		
 		for(int i =0; i< c; i++){
-			for(int j= 0; j<cells.size(); j+= 3){
-				//ArrayList<Integer> tempArrayY = new ArrayList<Integer>();
+			for(int j= 0; j< cells.size(); j+= 9){
 				ArrayList<Integer> tempValY =  cells.get(j+i);
-				//System.out.println(tempValY);
+				/*System.out.println(
+				"These are columns"+tempValY);*/
 				regionY.add(tempValY);
-				region.add(regionY);
+				//System.out.println(regionY);
+				if(i %3 == 0){
+				region.add(regionY);}
 			}
 		}
-		//region.add(regionX,regionY);
+		/*for(int j = 0; j < region.size();j++){
+			if(j% == 0)
+		}*/
 		System.out.println(region);
-		
-		
 	}	
 
 	
