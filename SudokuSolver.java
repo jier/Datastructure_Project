@@ -8,7 +8,7 @@ import java.lang.*;
 import java.io.*;
 
 
-public class SudokuSolver{
+public class SudokuSolver{ 
 
 	private final static int matrixLength = 9;
 	// private Row row = new Row();
