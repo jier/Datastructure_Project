@@ -7,33 +7,15 @@ import java.lang.*;
 
 public abstract class Matrix{
 	
-	public abstract void remove(int elem);
-	public abstract void getGrid(int elem);
-	public abstract void checkSpot(int elem);
-	public abstract Matrix[] row();
-	public abstract Matrix[] column();
-	public abstract Matrix[][] region();
-		
-	public boolean isStuck(){
-		/*boolean legal = true;
-		ArrayList[] possibilities = new ArrayList<Integer>();
-		int lengthMatrix = 9;
-		for(int i = 0;  i< lengthMatrix;i++){
-			if(possibilities[i] == possibilities[i+1]){
-				legal = false;
-			}else if (possibilities[i] == possibilities[i-1]){
-				legal = false;
-			}else{
-				legal = true;
-			}
-		}
-		return legal;*/
+	public void remove(int elem){
+
 	}
-	
-	
-	/*public void time(){
-	}*/
-	
+	public void getGrid(int elem){
+
+	}
+	public void checkSpot(int elem){
+		
+	}
 	
 	
 	

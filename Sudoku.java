@@ -11,38 +11,22 @@ public class Sudoku{
 	//ArrayList<Integer> list = new ArrayList<Integer>();
 	static int[] sudokuStringArray = new int[81];
 
-	/*private String grid;
-	//private array[][] grid;
-	//private Selection[][] groups;
-	private int[][] original, generated;
-	//private Set solvedCells;
-	private int count,turns,wipes, startCount;
-	private boolean stuck;
-	
-	public Sudoku(){
-		this(new int[9][9]);
-	}
-	
-	/*public Sudoku(int [][] org){
-		turns =0;
-		original = new int[9][9];
-		generated = new int[9][9];
-		for(int r =0; r< 9; r++){
-			for(int c =0; c< 9; c++){
-				if (org[r][c] != 0){
-					original[r][c] = org[r][c];
-					generated[r][c] = org[r][c];
-				}
-			}
-		}
-		
-	}*/
-		
+
+			
 	public void read(){
 		 //System.out.println("ik ga inlezen");
 		try {
 			BufferedReader file = new BufferedReader(new 
 FileReader("single.txt"));
+
+	public Sudoku(int [][] org){
+		
+	}
+	
+	public void read(){
+		 try {
+            BufferedReader file = new BufferedReader(new FileReader("single.txt"));
+
             //start = System.currentTimeMillis();
 			String str, copy;
 			while ((str = file.readLine()) != null) {
@@ -62,7 +46,20 @@ FileReader("single.txt"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+				   	int f = Character.digit(c,10); 
+				   	//System.out.printf("%s\n", c);
+				   	//list.add(f);
+				   	sudokuStringArray[i] = f;
+				}	
 
+				printBoard();			
+            }
+
+            ///end = System.currentTimeMillis();
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public void benchmark(){
@@ -99,33 +96,27 @@ FileReader("single.txt"));
 		return 5;
 	}
 
-	/*public int[][] printMatrix(){
-		 int[][] temp = new int[9][9];
-		 for(int i =0; i < 9; i++){
-		 	for(int j= 0; j< 9; j++){
-		 		temp[i][j]= grid[i][j];
-		 	}
-		 }
-		 return temp;
-	}*/
-
 	public void printBoard() {
 	
 		    for (int k = 0; k < sudokuStringArray.length; k++) {
-		    	
-		        if(k%9==0 && k != 0)
-		        		System.out.println("|");
-		        	if(k%27==0)
-		                System.out.println(" -----------------------");
-		        if(k%3==0)
-		        	System.out.print("| ");
-		    	
-		    	System.out.print(sudokuStringArray[k]);
-		    	System.out.print(' ');
+		return 6;
+	}
 
-		            //System.out.print("\n");
-		            
-		        
+	public void printBoard() {
+	
+		    for (int i = 0; i < sudokuStringArray.length; i++) {
+		    	
+		        if(i%9==0 && i != 0)
+		        	System.out.println("|");
+		        if(i%27==0)
+		            System.out.println(" -----------------------");
+		        if(i%3==0)
+		        	System.out.print("| ");
+		    	System.out.print(sudokuStringArray[k]);
+
+		    	System.out.print(sudokuStringArray[i]);
+		    	System.out.print(' ');
+		  	        
 		    }
 		    System.out.println("|");
 		    System.out.println(" -----------------------");
@@ -133,11 +124,6 @@ FileReader("single.txt"));
 		    System.out.print('\n');
 	}
 	
-	/*public int[][] printMatrix(){
-		 int[][] temp = new int[9][9];
-		
-		 return temp;
-	}*/
 	public int printResults(){
 
 		System.out.println("this is the end");
@@ -155,6 +141,9 @@ FileReader("single.txt"));
 	    sudoku.printResults();
 	    sudoku.printBoard();*/
 	    sudoku.solve();
+	    sudoku.read();
+	    sudoku.solve();
+	    //System.out.println(Arrays.toString(sudokuStringArray));
 	}
 	
 	
