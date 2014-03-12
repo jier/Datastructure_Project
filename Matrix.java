@@ -15,10 +15,8 @@ public abstract class Matrix{
 	public abstract Matrix[][] region();
 		
 	public boolean isStuck(){
-		boolean legal = true;
-		int [] possibilities = new int[new ArrayList();new ArrayList(); 
-		new ArrayList();new ArrayList();new ArrayList(); 
-		new ArrayList();];
+		/*boolean legal = true;
+		ArrayList[] possibilities = new ArrayList<Integer>();
 		int lengthMatrix = 9;
 		for(int i = 0;  i< lengthMatrix;i++){
 			if(possibilities[i] == possibilities[i+1]){
@@ -29,9 +27,10 @@ public abstract class Matrix{
 				legal = true;
 			}
 		}
-		return legal;
+		return legal;*/
 	}
-		
+	
+	
 	/*public void time(){
 	}*/
 	
