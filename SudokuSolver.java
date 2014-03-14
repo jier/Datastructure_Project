@@ -21,11 +21,15 @@ public class SudokuSolver{
 	
 	public SudokuSolver(int[] readSudoku){
 		possibilities(readSudoku);
+		System.out.println(cells);
 		generateRow();
 		generateColumn();
 		generateRegion();
 		//debugPrintAll();
 		clean();
+		canLines();
+		//canlines();
+		//printtemp();
 	}
 
 	public void possibilities(int[] readSudoku){
@@ -152,6 +156,33 @@ public class SudokuSolver{
 		System.out.println(rows.get(4).getCell(7));
 	}
 
+	public void printBoard() {
+	
+		    for (int i = 0; i < cells.size(); i++) {
+		    	
+		        if(i%9==0 && i != 0)
+		        	System.out.println("|");
+		        if(i%27==0)
+		            System.out.println(" -----------------------");
+		        if(i%3==0)
+		        	System.out.print("| ");
+		    	
+		    	if(cells.get(i).size() == 1){
+		    		System.out.print(cells.get(i).get(0));
+		    	}
+		    	else{
+		    		System.out.print(0);
+		    	}
+		    	System.out.print(' ');
+		  	        
+		    }
+		    System.out.println("|");
+		    System.out.println(" -----------------------");
+
+		    System.out.print('\n');
+		    System.out.println(cells);
+	}
+
 	public void clean(){
 		for(Row row : rows){
 			//System.out.println("original row");
@@ -174,7 +205,23 @@ public class SudokuSolver{
 			//System.out.println("done");
 			//System.out.println(region.getMatrix());
 		}
-		//todo print temp board 
-		sudoku.printBoard();
+		printBoard();
+	}
+
+	public void canLines(){
+		System.out.println("Started looking for canlines");
+		for(Region region : regions){
+			System.out.println("checking region");
+			for(int i =0; i< region.getMatrix().size(); i++){
+				ArrayList<Integer> temp = region.getCell(i);
+				if(temp.size() != 1){
+					System.out.println(temp);
+					for(int j =0; j<region.getCell(i).size(); j++){
+						int tt = temp.get(j);
+						System.out.println(tt);
+					}
+				}
+			}
+		}
 	}
 }
