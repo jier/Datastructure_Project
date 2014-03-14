@@ -11,41 +11,33 @@ import java.io.*;
 public class SudokuSolver{ 
 
 	private final static int matrixLength = 9;
-	// private Row row = new Row();
-	//private Column column = new Column();
-	//private Region region = new Region();
-
 	private ArrayList<ArrayList<Integer>> cells = new 
-ArrayList<ArrayList<Integer>>(81);
-	private ArrayList<ArrayList<Integer>> regionX = new 
-ArrayList<ArrayList<Integer>>(3);
-	private	ArrayList<ArrayList<Integer>> regionY = new 
-ArrayList<ArrayList<Integer>>(3);
-	private	ArrayList<ArrayList<ArrayList<Integer>>> region = new 
-ArrayList<ArrayList<ArrayList<Integer>>>(81);
+	ArrayList<ArrayList<Integer>>(81);
 
-	//private int[] incomingStream = new int[81];
-
+	public List<Row> rows = new ArrayList<Row>();
+	public List<Column> columns = new ArrayList<Column>();
+	public List<Region> regions = new ArrayList<Region>();
+	
+	
 	public SudokuSolver(int[] readSudoku){
-		//incomingStream = readSudoku;`
 		possibilities(readSudoku);
-		System.out.println("These are the rows");
 		generateRow();
-		System.out.println("These are the columns");
 		generateColumn();
-		System.out.println("These are the regions");
 		generateRegion();
+		//debugPrintAll();
+		clean();
 	}
 
 	public void possibilities(int[] readSudoku){
-		ArrayList<Integer> zero = new ArrayList<Integer>();
-		for(int i = 1; i < 10; i++){
-			zero.add(i);
-		}
+		
 		
 		for (int i = 0; i < readSudoku.length; i++) {
 			
 			if( readSudoku[i] == 0 ){
+				ArrayList<Integer> zero = new ArrayList<Integer>();
+			for(int j =1; j < 10; j++){
+				zero.add(j);
+			}
 				cells.add(zero);
 			}else{
 				ArrayList<Integer> tempArray = new ArrayList<Integer>();
@@ -53,88 +45,136 @@ ArrayList<ArrayList<ArrayList<Integer>>>(81);
 				cells.add(tempArray);
 			}
 		}
-
-		System.out.println(cells);
 	}
 
-	/*
-	public void run(){
-		boolean requested = false;
-		while(requested == true){
-			if(row.length !=0){
-				row();
-			}else if (column.length !=0){
-				column();
-			}else if (region.length !=0){
-				region();
-			}else{
-				row();
-				column();
-				region();
-			}
+	public void createZero(){
+		ArrayList<Integer> zero = new ArrayList<Integer>();
+		for(int i =1; i < 10; i++){
+			zero.add(i);
 		}
 	}
-*/
+
 	public void generateRow(){
+
+		for(int i = 0; i < 9; i++) {
+	    	rows.add(new Row());
+		}
+
 		ArrayList<ArrayList<Integer>> row = new ArrayList<ArrayList<Integer>>(9);
 		for(int i= 0; i<cells.size(); i+=9){
 			for(int k= 0; k<9; k++){
-				//ArrayList<Integer> tempArray = new ArrayList<Integer>();
 				ArrayList<Integer> tempVal = cells.get(k+i);
-				System.out.println(tempVal);
-				row.add(tempVal);
-			
-				
-								
+				rows.get(i/9).addValue(tempVal);		
 			}
-		} 
+		}
+
 	}
 	
 	public void generateColumn(){
+
+		for(int i = 0; i < 9; i++) {
+	    columns.add(new Column());
+	}
+
 		ArrayList<ArrayList<Integer>> column = new ArrayList<ArrayList<Integer>>(9);
 		for(int i = 0; i< 9; i ++){
 			for(int k = 0; k< cells.size(); k+=9){
-				//ArrayList<Integer> tempArr = new ArrayList<Integer>();
 				ArrayList<Integer> tempVal = cells.get(k+i);
-				System.out.println(tempVal);	
-				column.add(tempVal);
-				
+				columns.get(i).addValue(tempVal);		
 			}
 		}
-		//System.out.println(column);
+
 	}
 
 
 	public void generateRegion(){
-		int r = 3,c = 3;
-		for(int i =0; i< cells.size(); i+=3){
-			for(int j= 0; j<r; j++){
-				ArrayList<Integer> tempValX =  cells.get(j+i);
-				/*System.out.println(
-				"These are rows:"+tempValX);*/
-				regionX.add(tempValX);
-				if(j%3 == 0){
-				region.add(regionX);}
-			}
+
+		for(int i = 0; i < 9; i++) {
+	   		regions.add(new Region());
 		}
-		
-		for(int i =0; i< c; i++){
-			for(int j= 0; j< cells.size(); j+= 9){
-				ArrayList<Integer> tempValY =  cells.get(j+i);
-				/*System.out.println(
-				"These are columns"+tempValY);*/
-				regionY.add(tempValY);
-				//System.out.println(regionY);
-				if(i %3 == 0){
-				region.add(regionY);}
+
+		for(int i= 0; i<cells.size(); i+=9){
+			for(int k= 0; k<9; k++){
+				ArrayList<Integer> tempVal = cells.get(k+i);
+				if(k<3){
+					if(i/9<3){
+						regions.get(0).addValue(tempVal);
+					}else if(i/9<6){
+						regions.get(3).addValue(tempVal);
+					}else if(i/9<9){
+						regions.get(6).addValue(tempVal);
+					}
+				}
+				else if( k<6 ){
+					if(i/9<3){
+						regions.get(1).addValue(tempVal);
+					}else if(i/9<6){
+						regions.get(4).addValue(tempVal);
+					}else if(i/9<9){
+						regions.get(7).addValue(tempVal);
+					}
+				}
+				else if( k< 9){
+					if(i/9<3){
+						regions.get(2).addValue(tempVal);
+					}else if(i/9<6){
+						regions.get(5).addValue(tempVal);
+					}else if(i/9<9){
+						regions.get(8).addValue(tempVal);
+					}
+				}				
 			}
-		}
-		/*for(int j = 0; j < region.size();j++){
-			if(j% == 0)
-		}*/
-		System.out.println(region);
+		} 
 	}	
 
-	
+	public void debugPrintAll(){
+		System.out.println("The whole matrix:");
+		System.out.println(cells);
+		System.out.println("\n");
+		System.out.println("These are the rows:");
+		for(int i = 0; i < rows.size(); i++) {
+			System.out.printf("Row %d\n", i+1 );
+			System.out.println(rows.get(i).getMatrix());
+		}
+		System.out.println("\n");
+		System.out.println("These are the columns:");
+		for(int i = 0; i < columns.size(); i++) {
+			System.out.printf("Column %d\n", i+1 );
+			System.out.println(columns.get(i).getMatrix());
+		}
+		System.out.println("\n");
+		System.out.println("These are the regions:");
+		for(int i = 0; i < regions.size(); i++) {
+			System.out.printf("Region %d\n", i+1 );
+			System.out.println(regions.get(i).getMatrix());
+		}
+		System.out.println("Gimme the cell");
+		System.out.println(rows.get(4).getCell(7));
+	}
 
+	public void clean(){
+		for(Row row : rows){
+			//System.out.println("original row");
+			//System.out.println(row.getMatrix());
+			row.clean();
+			//System.out.println("done");
+			//System.out.println(row.getMatrix());
+		}
+		for(Column column : columns){
+			//System.out.println("original col");
+			//System.out.println(column.getMatrix());
+			column.clean();
+			//System.out.println("done");
+			//System.out.println(column.getMatrix());
+		}
+		for(Region region : regions){
+			//System.out.println("original reg");
+			//System.out.println(region.getMatrix());
+			region.clean();
+			//System.out.println("done");
+			//System.out.println(region.getMatrix());
+		}
+		//todo print temp board 
+		sudoku.printBoard();
+	}
 }

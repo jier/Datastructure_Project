@@ -81,6 +81,8 @@ public class Sudoku{
 		return 6;
 	}
 
+	
+
 	public void printBoard() {
 	
 		    for (int i = 0; i < sudokuStringArray.length; i++) {
