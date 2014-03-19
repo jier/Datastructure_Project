@@ -14,35 +14,40 @@ public class SudokuSolver{
 	private ArrayList<ArrayList<Integer>> cells = new 
 	ArrayList<ArrayList<Integer>>(81);
 
-	public List<Row> rows = new ArrayList<Row>();
-	public List<Column> columns = new ArrayList<Column>();
-	public List<Region> regions = new ArrayList<Region>();
+	private List<Row> rows = new ArrayList<Row>();
+	private List<Column> columns = new ArrayList<Column>();
+	private List<Region> regions = new ArrayList<Region>();
+
+	private boolean solved = false;
 	
 	
 	public SudokuSolver(int[] readSudoku){
 		possibilities(readSudoku);
-		System.out.println(cells);
-		generateRow();
-		generateColumn();
-		generateRegion();
+		generateHouses();		
 		//debugPrintAll();
 		clean();
-		canLines();
-		//canlines();
-		//printtemp();
+		if( hiddenSingle() == true){
+			System.out.println("Solved with hiddenSingle");
+			//TODO check if sudoku is valid, if so congractulations
+			solved = true;
+		}else if(nakedPair() == true){
+			System.out.println("Solved with nakedPair");
+			//TODO check if sudoku is valid, if so congractulations
+			solved = true;
+		}else{
+			System.out.println("! Failed to solve  at al");
+		}		
 	}
 
-	public void possibilities(int[] readSudoku){
-		
-		
+	public boolean result(){
+		return solved;
+	}
+
+	private void possibilities(int[] readSudoku){
 		for (int i = 0; i < readSudoku.length; i++) {
 			
 			if( readSudoku[i] == 0 ){
-				ArrayList<Integer> zero = new ArrayList<Integer>();
-			for(int j =1; j < 10; j++){
-				zero.add(j);
-			}
-				cells.add(zero);
+				cells.add(createZero());
 			}else{
 				ArrayList<Integer> tempArray = new ArrayList<Integer>();
 				tempArray.add(readSudoku[i]);
@@ -51,14 +56,21 @@ public class SudokuSolver{
 		}
 	}
 
-	public void createZero(){
+	private ArrayList<Integer> createZero(){
 		ArrayList<Integer> zero = new ArrayList<Integer>();
 		for(int i =1; i < 10; i++){
 			zero.add(i);
 		}
+		return zero;
 	}
 
-	public void generateRow(){
+	private void generateHouses(){
+		generateRow();
+		generateColumn();
+		generateRegion();
+	}
+
+	private void generateRow(){
 
 		for(int i = 0; i < 9; i++) {
 	    	rows.add(new Row());
@@ -74,7 +86,7 @@ public class SudokuSolver{
 
 	}
 	
-	public void generateColumn(){
+	private void generateColumn(){
 
 		for(int i = 0; i < 9; i++) {
 	    columns.add(new Column());
@@ -91,7 +103,7 @@ public class SudokuSolver{
 	}
 
 
-	public void generateRegion(){
+	private void generateRegion(){
 
 		for(int i = 0; i < 9; i++) {
 	   		regions.add(new Region());
@@ -152,11 +164,11 @@ public class SudokuSolver{
 			System.out.printf("Region %d\n", i+1 );
 			System.out.println(regions.get(i).getMatrix());
 		}
-		System.out.println("Gimme the cell");
-		System.out.println(rows.get(4).getCell(7));
 	}
 
 	public void printBoard() {
+
+			int totalzero = 0;
 	
 		    for (int i = 0; i < cells.size(); i++) {
 		    	
@@ -172,56 +184,281 @@ public class SudokuSolver{
 		    	}
 		    	else{
 		    		System.out.print(0);
+		    		totalzero = totalzero + 1;
 		    	}
-		    	System.out.print(' ');
-		  	        
+		    	System.out.print(' ');		  	        
 		    }
 		    System.out.println("|");
 		    System.out.println(" -----------------------");
 
+		    System.out.println("number of empty spots:");
+		    System.out.println(totalzero);
+
 		    System.out.print('\n');
-		    System.out.println(cells);
+
+		    System.out.print('\n');
+		    //System.out.println(cells);
+
 	}
 
-	public void clean(){
-		for(Row row : rows){
-			//System.out.println("original row");
-			//System.out.println(row.getMatrix());
-			row.clean();
-			//System.out.println("done");
-			//System.out.println(row.getMatrix());
+	private boolean sudokuFilled(){
+		int filled = 0;
+		for (int i = 0; i < cells.size(); i++) {
+			if( cells.get(i).size() == 1 ){
+				filled ++;
+			}
 		}
-		for(Column column : columns){
-			//System.out.println("original col");
-			//System.out.println(column.getMatrix());
-			column.clean();
-			//System.out.println("done");
-			//System.out.println(column.getMatrix());
+		if( filled == 81 ){
+			return true;
 		}
-		for(Region region : regions){
-			//System.out.println("original reg");
-			//System.out.println(region.getMatrix());
-			region.clean();
-			//System.out.println("done");
-			//System.out.println(region.getMatrix());
+		else{
+			return false;
 		}
-		printBoard();
 	}
 
-	public void canLines(){
-		System.out.println("Started looking for canlines");
-		for(Region region : regions){
-			System.out.println("checking region");
-			for(int i =0; i< region.getMatrix().size(); i++){
-				ArrayList<Integer> temp = region.getCell(i);
-				if(temp.size() != 1){
-					System.out.println(temp);
-					for(int j =0; j<region.getCell(i).size(); j++){
-						int tt = temp.get(j);
-						System.out.println(tt);
+	private void clean(){
+		boolean improvement = true;
+		int improvementShownInAHouse = 1;
+		
+		while (improvementShownInAHouse > 0 ) {
+				improvementShownInAHouse = 0;		
+			
+			for(Row row : rows){
+				improvement = row.cleanMatrix();
+				if(improvement == true){
+					improvementShownInAHouse ++;
+				}
+			}
+			for(Column column : columns){
+				improvement = column.cleanMatrix();
+				if(improvement == true){
+					improvementShownInAHouse ++;
+				}
+			}
+			for(Region region : regions){
+				improvement = region.cleanMatrix();
+				if(improvement == true){
+					improvementShownInAHouse ++;
+				}
+				improvement = region.cleanMatrix();
+			}
+			//printBoard();
+			//System.out.println(cells);
+		}
+		
+	}
+
+	private boolean hiddenSingle(){
+
+		int [] freqArrays;
+		int[] foundHiddenAndWhere;
+		int improvement = 1;
+
+		while( improvement > 0){
+			improvement = 0;
+			
+			for(Row row : rows){
+				//make frequenty array of all options, if there is only one occurence of a option it is a hidden single.
+				freqArrays = row.buildFreqArray();
+				//Now we have the frequency array, check if there is a unique option and find it's index
+				foundHiddenAndWhere = hiddenSinglePresent(row, freqArrays);
+				if(foundHiddenAndWhere[0] == 1){
+					//if an unique option is found place it. 
+				  	row.setValue(foundHiddenAndWhere[1], foundHiddenAndWhere[2]);
+				  	improvement ++;
+		        }
+			}
+			if( sudokuFilled() == true ){
+				return true;
+			}
+			clean();
+			if( sudokuFilled() == true ){
+				return true;
+			}
+			
+			for(Column column : columns){
+				freqArrays = column.buildFreqArray();
+				foundHiddenAndWhere = hiddenSinglePresent(column, freqArrays);
+				if(foundHiddenAndWhere[0] == 1){
+				  	column.setValue(foundHiddenAndWhere[1], foundHiddenAndWhere[2]);
+				  	improvement ++;
+		        }
+			}
+			if( sudokuFilled() == true ){
+				return true;
+			}
+			clean();
+			if( sudokuFilled() == true ){
+				return true;
+			}
+
+			for(Region region : regions){
+				//make frequenty array of all options, if there is only one occurence of a option it is a hidden single.
+				freqArrays = region.buildFreqArray();
+				//Now we have the frequency array, check if there is a unique option and find it's index
+				foundHiddenAndWhere = hiddenSinglePresent(region, freqArrays);
+				if(foundHiddenAndWhere[0] == 1){
+					//if an unique option is found place it. 
+				  	region.setValue(foundHiddenAndWhere[1], foundHiddenAndWhere[2]);
+				  	improvement ++;
+		        }
+			}
+			if( sudokuFilled() == true ){
+				return true;
+			}
+			clean();
+			if( sudokuFilled() == true ){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private int[] hiddenSinglePresent(Matrix houseToCheck, int [] freqArrayToSearch ){
+		
+		int[] foundHiddenAndWhere = new int[3];
+		boolean singleHiddenPresent = false;
+		int isSingleHiddenHere = 0;
+		for (int i : freqArrayToSearch )
+        {
+        	isSingleHiddenHere ++;
+            if (i == 1){
+                foundHiddenAndWhere[0] = 1;
+                //find its index
+                foundHiddenAndWhere[1] = houseToCheck.indexForValue(isSingleHiddenHere);
+                foundHiddenAndWhere[2] = isSingleHiddenHere;
+            }
+        }
+        return foundHiddenAndWhere; 
+	}
+
+	public boolean nakedPair(){
+		System.out.println("Started looking for naked pairs");
+		boolean aresame  = false;
+		int improvementShown = 1;
+		boolean improvement = false;
+		int [] freqArray;
+
+		while( improvementShown > 0){
+			improvementShown = 0;
+			for(Row row : rows){
+				freqArray =  row.buildFreqArray();
+
+				System.out.println(Arrays.toString(freqArray));
+				
+
+				aresame = false;
+				for( int i = 0; i < row.matrixSize(); i++){
+					//System.out.println("check a number of values");
+					for( int j = 0; j < row.matrixSize(); j++){
+					   if( i != j && row.cellSize(i) == 2 && row.cellSize(i) == row.cellSize(j)){
+					   aresame = row.getCell(i).equals(row.getCell(j));
+					   }
+					   	if(aresame == true){
+					   		//System.out.println("Dit is best wel lijp");
+					   		//System.out.println(column.getMatrix());
+					   		for(int k = 0; k < row.cellSize(i); k++){
+					   			System.out.println("found the same");
+								
+					   			for( int l = 0; l < row.matrixSize(); l++){
+					   				if(l != i && l != j){
+					   					int t = row.getCell(i).get(k);
+					   					//System.out.printf("Dit is wat we gaan verwijderen, waar: %d, wat: %d", t ,l);
+					   					improvement = row.removeNumber(row.getCell(i).get(k),l);
+					   					if( improvement == true ) {
+					   						improvementShown ++;
+					   					}
+					   				}
+					   			}
+					   		}
+					   			//System.out.println(column.getMatrix());
+					   	}
+					   	aresame = false;
 					}
 				}
 			}
-		}
+			clean();
+			if( sudokuFilled() == true ){
+				return true;
+			}
+			hiddenSingle();
+			if( sudokuFilled() == true ){
+				return true;
+			}
+			for(Column column : columns){
+				aresame = false;
+				for( int i = 0; i < column.matrixSize(); i++){
+					//System.out.println("check a number of values");
+					for( int j = 0; j < column.matrixSize(); j++){
+
+					   if( i != j && column.cellSize(i) == 2 && column.cellSize(i) == column.cellSize(j)){
+
+					   aresame = column.getCell(i).equals(column.getCell(j));
+					   }
+					   	if(aresame == true){
+					   		//System.out.println("Dit is best wel lijp");
+					   		//System.out.println(column.getMatrix());
+					   		for(int k = 0; k < column.cellSize(i); k++){
+					   			for( int l = 0; l < column.matrixSize(); l++){
+					   				if(l != i && l != j){
+					   					int t = column.getCell(i).get(k);
+					   					//System.out.printf("Dit is wat we gaan verwijderen, waar: %d, wat: %d", t ,l);
+					   					column.removeNumber(column.getCell(i).get(k),l);
+					   				}
+					   			}
+					   		}
+					   			//System.out.println(column.getMatrix());
+					   	}
+					   	aresame = false;
+					}
+				}
+			}
+			clean();
+			if( sudokuFilled() == true ){
+				return true;
+			}
+			hiddenSingle();
+			if( sudokuFilled() == true ){
+				return true;
+			}
+			for(Region region : regions){
+				aresame = false;
+				for( int i = 0; i < region.matrixSize(); i++){
+					//System.out.println("check a number of values");
+					for( int j = 0; j < region.matrixSize(); j++){
+
+					   if( i != j && region.cellSize(i) == 2 && region.cellSize(i) == region.cellSize(j)){
+
+					   aresame = region.getCell(i).equals(region.getCell(j));
+					   }
+					   	if(aresame == true){
+					   		//System.out.println("Dit is best wel lijp");
+					   		//System.out.println(column.getMatrix());
+					   		for(int k = 0; k < region.cellSize(i); k++){
+					   			for( int l = 0; l < region.matrixSize(); l++){
+					   				if(l != i && l != j){
+					   					int t = region.getCell(i).get(k);
+					   					//System.out.printf("Dit is wat we gaan verwijderen, waar: %d, wat: %d", t ,l);
+					   					region.removeNumber(region.getCell(i).get(k),l);
+					   				}
+					   			}
+					   		}
+					   			//System.out.println(column.getMatrix());
+					   	}
+					   	aresame = false;
+					}
+				}
+			}
+			clean();
+			if( sudokuFilled() == true ){
+				return true;
+			}
+			hiddenSingle();
+			if( sudokuFilled() == true ){
+				return true;
+			}
+		}//end while improvement
+		//printBoard();
+			return false;
 	}
 }

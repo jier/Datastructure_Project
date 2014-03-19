@@ -4,9 +4,11 @@ import java.io.*;
 
 public class Sudoku{
 
-	long start = 0;
-	long end = 0;
-	//ArrayList<Integer> list = new ArrayList<Integer>();
+	private long start = 0;
+	private long end = 0;
+	private double totalSudoku = 0;
+	private double totalSolved = 0;
+	private double successRate = 0;
 	static int[] sudokuStringArray = new int[81];
 	
 	public Sudoku(){
@@ -17,27 +19,20 @@ public class Sudoku{
 		
 	}
 	
-	public void read(){
+	public void processFile(){
 		 try {
-            BufferedReader file = new BufferedReader(new FileReader("single.txt"));
-            //start = System.currentTimeMillis();
+            BufferedReader file = new BufferedReader(new FileReader("subig20.txt"));
             String str, copy;
             while ((str = file.readLine()) != null) {
-            	//int sudokuStream = Integer.parseInt(src.toString());
-  
                 for(int i = 0; i < str.length(); i++)
 					{
 					char c = str.charAt(i);
 				   	int f = Character.digit(c,10); 
-				   	//System.out.printf("%s\n", c);
-				   	//list.add(f);
 				   	sudokuStringArray[i] = f;
-				}	
-
-				printBoard();			
+				}
+				totalSudoku ++;
+				solve(sudokuStringArray);						
             }
-
-            ///end = System.currentTimeMillis();
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,79 +44,46 @@ public class Sudoku{
 	public void benchmark(){
 	}
 	
-	public void update (){
+	public void solve( int[] sudokoToSolve){
+		boolean succesOrFailure = false;
+		SudokuSolver solver = new SudokuSolver(sudokoToSolve);
+		succesOrFailure = solver.result();
+		if(succesOrFailure == true){
+			isSolved();
+		}else{
+			notSolved();
+		}
 	}
 	
-	public void solve(){
-		SudokuSolver solver = new SudokuSolver(sudokuStringArray);
-
-	}
-	
-	public boolean isSolved(){
-		return false;
-	}
-	 
-	public int getCount(){
-		return 5 ;
-	}
-	
-	public int getOrg(){
-		return 5;
-	}
-	
-	public int getGen(){
-		return 5;
-	}
-	
-	public int getTurn(){
-		return 5;
-	}
-	
-	public int getStartCount(){
-		return 6;
+	public void isSolved(){
+		totalSolved ++; 
+		System.out.println("yeah!");
 	}
 
-	
-
-	public void printBoard() {
-	
-		    for (int i = 0; i < sudokuStringArray.length; i++) {
-		    	
-		        if(i%9==0 && i != 0)
-		        	System.out.println("|");
-		        if(i%27==0)
-		            System.out.println(" -----------------------");
-		        if(i%3==0)
-		        	System.out.print("| ");
-		    	
-		    	System.out.print(sudokuStringArray[i]);
-		    	System.out.print(' ');
-		  	        
-		    }
-		    System.out.println("|");
-		    System.out.println(" -----------------------");
-
-		    System.out.print('\n');
+	public void notSolved(){
+		System.out.println("too bad");
 	}
-	
-	public int[][] printMatrix(){
-		 int[][] temp = new int[9][9];
+
+	public void printResults(){
+
+		successRate = (totalSolved/totalSudoku)*100;
+ 		successRate = Math.round(successRate * 100.0) / 100.0;
+
+		System.out.println("The program is done, we will now present the results.");
+		System.out.println("Total amount of sudoku's that are processed:");
+		System.out.println(totalSudoku);
+		System.out.println("Total amount of sudoku's that is succesfully solved:");
+		System.out.println(totalSolved);
+		System.out.println("This result in a succes rate of:");
+		System.out.printf("%.2f %%\n", successRate);
 		
-		 return temp;
-	}
-	public int printResults(){
-
-		System.out.println("this is the end");
-		//int size = list.size();
-		//System.out.println(size);
-		return 6;
 	}
 
 	public static void main(String[] args) {
 		System.out.println("Begin of program");
 	    Sudoku sudoku = new Sudoku();
-	    sudoku.read();
-	    sudoku.solve();
+	    sudoku.processFile();
+	    sudoku.printResults();
 	    //System.out.println(Arrays.toString(sudokuStringArray));
 	    
 	    
